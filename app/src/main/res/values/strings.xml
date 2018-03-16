@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Bitacora</string>
+    <string name="save">Guardar</string>
+    <string name="confirm">Confirmació</string>
+    <string name="NoSavedChanges">Has realizado cambios. ¿Deseas guardarlos?</string>
+    <string name="NoSavedChangesAlert">Alerta</string>
+</resources>
