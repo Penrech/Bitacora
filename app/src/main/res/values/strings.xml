@@ -4,4 +4,6 @@
     <string name="confirm">Confirmació</string>
     <string name="NoSavedChanges">Has realizado cambios. ¿Deseas guardarlos?</string>
     <string name="NoSavedChangesAlert">Alerta</string>
+    <string name="CantWriteFile">No puedo escribir el fichero</string>
+    <string name="DeleteConfirmation">Estas segur que vols esborrar el log de %1$s a las %2$s</string>
 </resources>

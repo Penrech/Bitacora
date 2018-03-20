@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,15 +38,16 @@ public class BitacoraActivity extends AppCompatActivity {
         try {
             FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
             for (logItem item : items) {
-                String line = String.format("%s;%s;%s\n", item.getDateString(),item.getHourString(),item.getLog());
+                String line = String.format("%tQ;%s\n",item.getFechaHora(),item.getLog());
                 fos.write(line.getBytes());
+                Log.d("Linea", line);
             }
             fos.close();
         }
         catch (FileNotFoundException e) {
 
         } catch (IOException e) {
-            Toast.makeText(this, "No puedo escribir el fichero",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.CantWriteFile,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -61,14 +64,8 @@ public class BitacoraActivity extends AppCompatActivity {
                 for (String line : lines){
                     if (!line.isEmpty()){
                         String[] parts = line.split(";");
-                        DateFormat df = new SimpleDateFormat("dd/MM/yyyy k:mm");
-                        String dateUnformated = parts[0] +" "+ parts[1];
-                        try {
-                            Date result = df.parse(dateUnformated);
-                            items.add(new logItem(result,parts[2]));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        long date = Long.parseLong(parts[0]);
+                        items.add(new logItem(new Date(date),parts[1]));
                     }
                 }
             }
@@ -76,7 +73,7 @@ public class BitacoraActivity extends AppCompatActivity {
             return true;
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
-            Toast.makeText(this, "No puedo escribir el fichero",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.CantWriteFile,Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -123,7 +120,7 @@ public class BitacoraActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.confirm);
         builder.setMessage(
-                String.format(Locale.getDefault(), "Estas segur que vols esborrar el log de '%s' a las '%s' ",
+                String.format(Locale.getDefault(), getString(R.string.DeleteConfirmation),
                         items.get(pos).getDateString(),items.get(pos).getHourString())
         );
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

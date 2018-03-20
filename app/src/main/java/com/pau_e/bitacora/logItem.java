@@ -14,6 +14,11 @@ public class logItem {
         private String log;
         private static Calendar calendar = new GregorianCalendar();
 
+    public long getTimeMili(){
+        calendar.setTime(this.fechaHora);
+        return calendar.getTimeInMillis();
+    }
+
     public String getDateString() {
         calendar.setTime(this.fechaHora);
         int year = calendar.get(Calendar.YEAR);
